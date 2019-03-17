@@ -6,17 +6,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class QuestionService {
 
-  uri = 'http://localhost:8083/business';
+  uri = 'http://localhost:8083/question';
 
   constructor(private http: HttpClient) { }
 
-  addQuestion(question, optionDescription) {
-    const obj = {
-      question: question,
-      optionList: optionDescription
-    };
-    console.log(obj);
-    this.http.post(`${this.uri}/add`, obj)
+  addQuestion(questionDetail) {
+    
+    this.http.post(`${this.uri}/add`, questionDetail)
         .subscribe(res => console.log('Done'));
   }
 }

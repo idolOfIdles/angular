@@ -3,16 +3,23 @@
     <form [formGroup]="angForm" novalidate>
       <div class="form-group">
         <label class="col-md-4">Question</label>
-        <input type="text" class="form-control" formControlName="question" #question />
+        <input type="text" class="form-control" formControlName="question" />
       </div>
-      <div class="form-group">
-        <label class="col-md-4">Options </label>
-        <input type="text" class="form-control" formControlName="optionDescription" .optionDescription />
-        <input type="text" class="form-control" formControlName="optionDescription" .optionDescription />
+
+
+
+      <div formArrayName="optionList" class="form-group" >
+
+        <div *ngFor="let option of optionList.controls; let i=index" [formGroupName] = "i">
+          <!-- The repeated alias template -->
+          <input type="text" class="form-control" formControlName="description"/>
+        </div>
+        <button (click)="addOption()">Add Option</button>
 
       </div>
+
       <div class="form-group">
-        <button (click)="addQuestion(question.value, optionDescription.value)"
+        <button (click)="addQuestion()"
             [disabled]="angForm.pristine || angForm.invalid" 
             class="btn btn-primary">
             Add Business

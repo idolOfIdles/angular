@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+import { FormGroup,  FormBuilder,  Validators, FormArray, FormControl } from '@angular/forms';
 import { QuestionService } from '../question.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { QuestionService } from '../question.service';
   templateUrl: './gst-add.component.html',
   styleUrls: ['./gst-add.component.css']
 })
-export class GstAddComponent implements OnInit {
+export class GstAddComponent {
 
   angForm: FormGroup;
   constructor(private fb: FormBuilder, private qs: QuestionService) {
@@ -16,16 +16,38 @@ export class GstAddComponent implements OnInit {
 
   createForm() {
     this.angForm = this.fb.group({
-      question: ['', Validators.required ],
-      optionDescription: ['', Validators.required ]
+      question: '',
+      optionList: this.fb.array([this.newEmptyOption()]),
+
     });
   }
 
-  addQuestion(question, optionDescription) {
-    this.qs.addQuestion(question, optionDescription);
+  get optionList() {
+    return this.angForm.get('optionList') as FormArray;
   }
 
-  ngOnInit() {
+  addQuestion() {
+    this.qs.addQuestion(this.angForm.value);
   }
+
+  addOption() {
+    const option = this.fb.group({
+      description : ""  
+    }) 
+    this.optionList.push(option);
+    console.log(this.angForm.value);
+    
+  }
+
+  newEmptyOption() {
+    return this.fb.group({
+      description : ""
+    }) 
+    
+  }
+
+
+
+  
 
 }
